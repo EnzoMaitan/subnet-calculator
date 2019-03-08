@@ -3,15 +3,15 @@ class SubnetCalculator:
     host_ip = None
     host_ip_mask = None
 
-    borrowed_bits = None
-    available_subnets = None
-    subnet_id = None
-    first_host = None
-    last_host = None
-    available_hosts = None
-    host_bits = None
-    broadcast_address = None
-    subnet_index = None
+    borrowed_bits: int
+    available_subnets: int
+    subnet_id: str
+    first_host: str
+    last_host: str
+    available_hosts: int
+    host_bits: int
+    broadcast_address: str
+    subnet_index: int
 
     subnet_id_decimal = None
     broadcast_address_decimal = None
@@ -48,6 +48,7 @@ class SubnetCalculator:
         for index, v in enumerate(given_host_ip_boolean):
             c.append(given_host_ip_boolean[index] * given_subnet_mask_boolean[index])
 
+        # assigns result in the subnet_id as a string
         self.subnet_id = ''.join([str(x) for x in c])
 
     def get_broadcast_address(self,sid, borrowed_bits, default_mask):
@@ -60,7 +61,7 @@ class SubnetCalculator:
 
         return sid
 
-    def convert_binary_to_decimal_string(self,binary_string):
+    def convert_binary_to_decimal_string(self, binary_string):
         a = [binary_string[i:i+8] for i in range(0, len(binary_string), 8)]
         a = [int(x, 2) for x in a]
         return a
