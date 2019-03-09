@@ -1,10 +1,18 @@
+import re
+
 class IpCalculator:
     ip_decimal_octects_list = None
     ip_binary_octects_list = None
     ipv4 = None
     ip_class = None
 
-    def __init__(self,ipv4):
+    def __init__(self, ipv4):
+
+        # checks if the IPV4 received is valid
+        ip_valid_format = '\d{0,3}[0-255]\.\d{0,3}[0-255]\.\d{0,3}[0-255]\.\d{0,3}[0-255]'
+        if not re.match(ip_valid_format, ipv4):
+            raise ValueError("Invalid Ip format")
+
         self.ipv4 = ipv4
         self.calculate_decimal_ip()
         self.convert_octects_to_binary()
