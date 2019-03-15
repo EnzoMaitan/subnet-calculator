@@ -9,8 +9,8 @@ class IpCalculator:
     def __init__(self, ipv4):
 
         # checks if the IPV4 received is valid
-        ip_valid_format = '\d{0,3}[0-255]\.\d{0,3}[0-255]\.\d{0,3}[0-255]\.\d{0,3}[0-255]'
-        if not re.match(ip_valid_format, ipv4):
+        ip_valid_format_regex = '[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5] \.[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5] \.[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]\.[0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]'
+        if not re.match(ip_valid_format_regex, ipv4):
             raise ValueError("Invalid Ip format")
 
         self.ipv4 = ipv4

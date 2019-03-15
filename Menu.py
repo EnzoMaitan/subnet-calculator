@@ -3,12 +3,6 @@ import SubnetCalculator as sc
 import sys
 
 # TODO Filter user input
-# '152.202.34.4'
-# '255.255.254.0'
-
-# '32.20.130.0'
-# '255.255.128.0'
-# 41
 
 def perfom_calculations():
     try:
@@ -19,8 +13,8 @@ def perfom_calculations():
         #host_ip_mask = ic.IpCalculator('255.255.128.0')
         subnet_information = sc.SubnetCalculator(host_ip, host_ip_mask)
         print_results(host_ip, host_ip_mask, subnet_information)
-    except:
-        print("Invalid Value")
+    except Exception as e:
+        print(e)
 
 def print_results(host_ip, host_ip_mask, subnet_information):
     print(".________________________________________IP_INFORMATION_______________________________________")
