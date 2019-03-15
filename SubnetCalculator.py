@@ -1,3 +1,5 @@
+import IpCalculator as ic
+
 class SubnetCalculator:
     host_ip = None
     host_ip_mask = None
@@ -18,21 +20,22 @@ class SubnetCalculator:
     last_host_decimal = None
 
     def __init__(self, host_ip, host_ip_mask):
-        self.host_ip = host_ip
+            self.host_ip = host_ip
 
-        self.host_ip_mask = host_ip_mask
+            self.host_ip_mask = host_ip_mask
 
-        self.calculate_borrowed_bits()
-        self.calculate_available_subnets()
-        self.calculate_subnet_id()
-        self.calculate_broadcast_address()
+            self.calculate_borrowed_bits()
+            self.calculate_available_subnets()
+            self.calculate_subnet_id()
+            self.calculate_broadcast_address()
 
-        self.calculate_first_host()
-        self.calculate_last_host()
-        self.calculate_host_bits()
-        self.calculate_available_hosts()
-        self.calculate_decimal_values()
-        self.calculate_subnet_index()
+            self.calculate_first_host()
+            self.calculate_last_host()
+            self.calculate_host_bits()
+            self.calculate_available_hosts()
+            self.calculate_decimal_values()
+            self.calculate_subnet_index()
+
 
     def calculate_subnet_id(self):
 
@@ -74,7 +77,10 @@ class SubnetCalculator:
             int(''.join(self.host_ip_mask.ip_binary_octects_list)) - int(self.host_ip.ip_class[1])).count('1')
 
     def calculate_available_subnets(self):
-        self.available_subnets = 2 ** self.borrowed_bits
+        if self.borrowed_bits > 0:
+            self.available_subnets = 2 ** self.borrowed_bits
+        else:
+            self.available_subnets = "Not applicable"
 
     def calculate_broadcast_address(self):
         self.broadcast_address = self.get_broadcast_address(self.subnet_id, self.borrowed_bits,
@@ -99,20 +105,34 @@ class SubnetCalculator:
         self.last_host_decimal = [str(x) for x in self.convert_binary_to_decimal_string(str(self.last_host))]
 
     def calculate_subnet_index(self):
-        self.subnet_index = int(
-            ''.join(self.host_ip.ip_binary_octects_list)[
-            self.host_ip.ip_class[3]:(self.host_ip.ip_class[3] + self.borrowed_bits)], 2)
+        if self.borrowed_bits > 0:
+            self.subnet_index = int(
+                ''.join(self.host_ip.ip_binary_octects_list)[
+                self.host_ip.ip_class[3]:(self.host_ip.ip_class[3] + self.borrowed_bits)], 2)
+        else:
+            self.subnet_index = "Not applicable"
 
-# TODO a table for each subnet with Broadcast
-'''
+    def calculate_new_network_address(self, network):
+        new_SID = ic.IpCalculator('.'.join(network))
+        for index, a in reversed(list(enumerate(new_SID.ip_decimal_octects_list))):
+            if 255 > a > 0:
+                new_SID.ip_decimal_octects_list[index] +=1
+                break
+        return new_SID
+
     def calculates_all_subnets(self):
-        print("Possible Networks")
+        print("Possible Networks / Showing 20")
         print("+-----------------+-----------------+-----------------+-------------------+")
         print("| Network Address | First Host IP   | Last Host Ip    | Broadcast Address |")
         print("+-----------------+-----------------+-----------------+-------------------+")
-        for x in (1, self.available_subnets):
-            print("| " + str(x).ljust(5) + " | " + "255.255.255.255".ljust(15) + " | " + "255.255.255.255".ljust(
-                15) + " | "+"255.255.255.255".ljust(15)+" | 255.255.255.255".ljust(15)+"   |")
-        print("+-------+-----------------+-----------------+-----------------+-------------------+")
-'''
+        network = self.subnet_id_decimal
+        for x in range(0, 20):
+            new = self.calculate_new_network_address(network)
+            network = [str(i) for i in new.ip_decimal_octects_list]
+            new_calculator = SubnetCalculator(new, self.host_ip_mask)
+
+            print("| " + '.'.join([str(i) for i in new.ip_decimal_octects_list]).ljust(15) + " | " + '.'.join(new_calculator.first_host_decimal).ljust(15) + " | " + '.'.join(new_calculator.last_host_decimal).ljust(
+                15) + " | "+'.'.join(new_calculator.broadcast_address_decimal).ljust(18)+"|")
+        print("+-----------------+-----------------+-----------------+-------------------+")
+
 

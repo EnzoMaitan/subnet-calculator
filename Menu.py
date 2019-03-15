@@ -7,17 +7,17 @@ import sys
 def perfom_calculations():
     try:
         host_ip = ic.IpCalculator(input("Enter the Host IP: "))
-        #host_ip = ic.IpCalculator('32.20.130.0')
 
         host_ip_mask = ic.IpCalculator(input("Enter the Subnet Mask: "))
-        #host_ip_mask = ic.IpCalculator('255.255.128.0')
         subnet_information = sc.SubnetCalculator(host_ip, host_ip_mask)
         print_results(host_ip, host_ip_mask, subnet_information)
+        subnet_information.calculates_all_subnets()
+
     except Exception as e:
         print(e)
 
 def print_results(host_ip, host_ip_mask, subnet_information):
-    print(".________________________________________IP_INFORMATION_______________________________________")
+    print(".".ljust(40,'_')+"IP INFORMATION".ljust(54,'_'))
     print("| Class : " + host_ip.ip_class[0])
     print("| Borrowed bits: " + str(subnet_information.borrowed_bits))
     print("| Available Subnets: " + str(subnet_information.available_subnets))
