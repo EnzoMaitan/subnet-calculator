@@ -6,7 +6,7 @@ class SubnetCalculator:
     host_ip: ic
     host_ip_mask = ic
 
-    borrowed_bits: int
+    borrowed_bits = 0
     available_subnets: int
     subnet_id: str
     first_host: str
@@ -28,11 +28,8 @@ class SubnetCalculator:
             # Host IP Mask in IpCalculator format
             self.host_ip_mask = host_ip_mask
 
-            # Calculates all the subnet information
-            self.calculate_all_values()
-
     def print_subnets_list(self):
-        sl = slc.SubnetListCalculator(self)
+        sl = slc.SubnetListCalculator(self,self.borrowed_bits, self.available_subnets)
         sl.calculate_all_subnets()
 
     def calculate_all_values(self):
@@ -47,6 +44,12 @@ class SubnetCalculator:
         self.calculate_available_hosts()
         self.calculate_decimal_values()
         self.calculate_subnet_index()
+
+    def calculate_first_index(self):
+        #gets the default network address
+        network_address=''.join(self.host_ip_mask.ip_binary_octects_list).count("1") - self.borrowed_bits
+        #returns the network address
+        return  [str(x) for x in self.convert_binary_to_decimal_string(self.subnet_id[:network_address].ljust(32,"0"))]
 
     def calculate_subnet_id(self):
         c = []
@@ -79,8 +82,9 @@ class SubnetCalculator:
 
     def calculate_broadcast_address(self):
         # removes the non-mask digits of the IP
-        to_remove = 32 - (self.borrowed_bits + self.host_ip.ip_class[3])
-        sid = self.subnet_id[:-to_remove]
+        to_remove = 32 - ''.join(self.host_ip_mask.ip_binary_octects_list).count("0")
+
+        sid = self.subnet_id[:to_remove]
 
         # add 1 to the remaining non-mask digits
         sid = sid.ljust(32, '1')

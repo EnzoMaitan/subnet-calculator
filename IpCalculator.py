@@ -14,9 +14,7 @@ class IpCalculator:
             raise ValueError("Invalid Ip format")
 
         self.ipv4 = ipv4
-        self.calculate_decimal_ip()
-        self.convert_octects_to_binary()
-        self.get_ip_class()
+
 
     # returns the decimal IP as an int list separated in 4 octets
     # Example: [000,000,000,000]
@@ -42,7 +40,7 @@ class IpCalculator:
         elif 192 <= first_octet <= 223:
             self.ip_class = ['C', 11111111111111111111111100000000, '255.255.255.0', 24]
         else:
-            self.ip_class = ['D']
+            raise Exception("Ip Classes D and E are not supported")
 
     # converts all binary values into booleans inside of the list
     def convert_binarylist_to_booleanslist(self):
