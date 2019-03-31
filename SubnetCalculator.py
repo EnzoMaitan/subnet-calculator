@@ -46,9 +46,9 @@ class SubnetCalculator:
         self.calculate_subnet_index()
 
     def calculate_first_index(self):
-        #gets the default network address
+        # gets the default network address
         network_address=''.join(self.host_ip_mask.ip_binary_octects_list).count("1") - self.borrowed_bits
-        #returns the network address
+        # returns the network address
         return  [str(x) for x in self.convert_binary_to_decimal_string(self.subnet_id[:network_address].ljust(32,"0"))]
 
     def calculate_subnet_id(self):

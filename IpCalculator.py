@@ -12,9 +12,7 @@ class IpCalculator:
         ip_valid_format_regex = '^(([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$'
         if not re.match(ip_valid_format_regex, ipv4):
             raise ValueError("Invalid Ip format")
-
         self.ipv4 = ipv4
-
 
     # returns the decimal IP as an int list separated in 4 octets
     # Example: [000,000,000,000]
