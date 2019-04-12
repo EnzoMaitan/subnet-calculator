@@ -5,9 +5,9 @@ import sys
 # TODO Filter Subnet mask Order
 
 def perfom_calculations():
-    try:
+    #try:
         #host_ip = ic.IpCalculator(input("Enter the Host IP: "))
-        host_ip = ic.IpCalculator('152.202.64.51')
+        host_ip = ic.IpCalculator('172.26.239.254')
         host_ip.calculate_decimal_ip()
         host_ip.convert_octects_to_binary()
         host_ip.get_ip_class()
@@ -24,8 +24,8 @@ def perfom_calculations():
 
         subnet_information.print_subnets_list()
 
-    except Exception as e:
-        print(e)
+    #except Exception as e:
+     #   print(e)
 
 def print_results(host_ip, host_ip_mask, subnet_information):
     print("+".ljust(40,'-')+"IP INFORMATION".ljust(53,'-')+"+")

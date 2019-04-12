@@ -6,6 +6,7 @@ class SubnetListCalculator:
     subnet_calculator: sc
     available_subnets : int
     borrowed_bits: int
+    current_index = 0
 
     def __init__(self, subnet_calculator, borrowed_bits, available_subnets):
         self.subnet_calculator = subnet_calculator
@@ -24,6 +25,7 @@ class SubnetListCalculator:
 
         # Adding + 1 to the borrowed part
         new_borrowed_zone = format(int(borrowed_zone,2) + 1,'0'+str(self.borrowed_bits)+'b')
+        self.current_index = int(new_borrowed_zone,2)
 
         # Add the new borrowed zone to the rest of the IP
         new_SID.ipv4 = ''.join(new_SID.ip_binary_octects_list)[:new_SID.ip_class[3]] + new_borrowed_zone
@@ -42,9 +44,9 @@ class SubnetListCalculator:
 
     def calculate_all_subnets(self):
         print("Possible Networks / Showing "+ str(self.available_subnets))
-        print("+-----------------+-----------------+-----------------+-------------------+")
-        print("| Network Address | First Host IP   | Last Host Ip    | Broadcast Address |")
-        print("+-----------------+-----------------+-----------------+-------------------+")
+        print("+---------+-----------------+-----------------+-----------------+-------------------+")
+        print("|  Index  | Network Address | First Host IP   | Last Host IP    | Broadcast Address |")
+        print("+---------+-----------------+-----------------+-----------------+-------------------+")
 
         network_ipv4 = ".".join(self.subnet_calculator.calculate_first_index())
         for x in range(0, self.available_subnets):
@@ -62,12 +64,13 @@ class SubnetListCalculator:
             new_calculator.calculate_last_host()
             new_calculator.calculate_decimal_values()
 
-            print("| " + '.'.join(new_calculator.subnet_id_decimal).ljust(15) + " | " + '.'.join(
+            print("| "+str(self.current_index).rjust(7)+" | " + '.'.join(new_calculator.subnet_id_decimal).ljust(15) + " | " + '.'.join(
                 new_calculator.first_host_decimal).ljust(15) + " | " + '.'.join(new_calculator.last_host_decimal).ljust(
                 15) + " | " + '.'.join(new_calculator.broadcast_address_decimal).ljust(18) + "|")
 
             network_ipv4 = self.calculate_new_network_address(network_ipv4)
-        print("+-----------------+-----------------+-----------------+-------------------+")
+        print("+---------+-----------------+-----------------+-----------------+-------------------+")
+
 
 
 
