@@ -1,5 +1,6 @@
 import re
 
+
 class IpCalculator:
     ip_decimal_octects_list = None
     ip_binary_octects_list = None
@@ -7,27 +8,35 @@ class IpCalculator:
     ip_class = None
 
     def __init__(self, ipv4):
-
-        # checks if the IPV4 received is valid
+        # checks if the IPV4 received is valid by using REGEX
         ip_valid_format_regex = '^(([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.([0-9]|[1-8][0-9]|9[0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5]))$'
         if not re.match(ip_valid_format_regex, ipv4):
             raise ValueError("Invalid Ip format")
         self.ipv4 = ipv4
 
-    # returns the decimal IP as an int list separated in 4 octets
-    # Example: [000,000,000,000]
     def calculate_decimal_ip(self):
+        """
+        returns the decimal IP as an int list separated in 4 octets
+
+        :return: Example: [000,000,000,000]
+        """
+
         self.ip_decimal_octects_list = [int(x) for x in self.ipv4.split('.')]
 
-    # returns the binary IP as string list separated in 4 octets
-    # Example: ['00000000', '00000000', '00000000', '00000000']
     def convert_octects_to_binary(self):
+        """
+        Converts the binary IP as string list separated in 4 octets
+        :return: Example: ['00000000', '00000000', '00000000', '00000000']
+        """
         # formats the ip (string format) to a list of 4 binary octets
+
         self.ip_binary_octects_list = [format(int(x), '08b') for x in self.ipv4.split('.')]
 
-    # returns the Class letter, binary mask, decimal mask, and mask bits
     def get_ip_class(self):
-
+        """
+        returns the Class letter, binary mask, decimal mask, and mask bits
+        :return: [0] Class letter, [1] binary mask, [2] decimal mask, [3] and mask bits
+        """
         # selects the first octet from the ip
         first_octet = self.ip_decimal_octects_list[0]
 
@@ -40,8 +49,11 @@ class IpCalculator:
         else:
             raise Exception("Ip Classes D and E are not supported")
 
-    # converts all binary values into booleans inside of the list
     def convert_binarylist_to_booleanslist(self):
+        """
+        converts all binary values into booleans inside of the list
+        :return: Ex: [True, True, False, False]
+        """
         booleanslist = []
         for x in self.ip_binary_octects_list:
             for y in x:
